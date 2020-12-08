@@ -116,6 +116,27 @@ Adding that again:
 incomplete_files <- rbind(incomplete_files, fourth_wave_of_files)
 ```
 
+12/7 update: we now have more files from ODH. 
+
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 11.25.20-12.4.20")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+fifth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files, fifth_wave_of_files)
+```
 
 How many hospitals are there total?
 
@@ -194,7 +215,7 @@ Which hospitals had few beds left as of the last day?
 
 ```{r}
 Adult_Beds_On_Last_Day <- Hospital_Beds %>%
-  filter(Date>"2020-11-20")
+  filter(Date>"2020-11-24")
 
 #No `Pediatric Airborne Infection Isolation`. Why?
 ```
@@ -306,7 +327,7 @@ Adult_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facility 
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Med/Surg`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March through Nov. 24"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
+    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March through  Dec. 4"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -322,7 +343,7 @@ Adult_ICU_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facil
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Critical Care`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March through Nov. 24"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
+    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March through Dec. 4"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -342,7 +363,7 @@ Kid_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility %>%
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Med/Surg`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March through Nov. 24"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
+    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March through Dec. 4"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -362,7 +383,7 @@ Kid_ICU_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility 
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Critical Care`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March through Nov. 24"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
+    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March through Dec. 4"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -376,7 +397,7 @@ purrr::map(Kid_hospitals, Kid_ICU_Capacity)
 
 ##Location
 
-Now we're going to add location data. For this you will need your own key. 
+Now we're going to add location data. For this *you will need your own key.* 
 
 ```{r}
 hospitals <- tibble(hospitals) %>% 
