@@ -244,6 +244,144 @@ Adding that again:
 incomplete_files <- rbind(incomplete_files,tenth_wave_of_files)
 ```
 
+1/19/2020 update: got more files from ODH
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 1.9.21-1-15-21/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+eleventh_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,eleventh_wave_of_files)
+```
+
+
+1/25/2020 update: got more files from ODH
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 1.16.21-1.22.21/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+twelveth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,twelveth_wave_of_files)
+```
+
+
+2/1 update:  update: got more files from ODH
+```{r}
+setwd("~/Code/Covid_Capacity/1.23.2021 -1.29-2021/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+thirteenth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,thirteenth_wave_of_files)
+```
+
+2/8 update:  update: got more files from ODH
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 1.30.2021-2.5.2021/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+fourteenth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fourteenth_wave_of_files)
+```
+
+
+2/17 update:  update: got more files from ODH.
+
+For some reason, this batch contains a Saline column, though there's not a whole lot reporting it. 
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 2.6.2021 - 2.12.2021/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fifteenth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+
+fifteenth_wave_of_files <- fifteenth_wave_of_files %>% 
+  select(-Saline)
+
+incomplete_files <- rbind(incomplete_files,fifteenth_wave_of_files)
+```
+2-22 update: got more files from ODH.
+
+
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 12.13.2021-12.19.2021/") #This a typo it's actually 2-13
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+sixteenth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,sixteenth_wave_of_files)
+```
+
 How many hospitals are there total?
 
 ```{r pressure, echo=FALSE}
@@ -433,7 +571,7 @@ Adult_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facility 
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Med/Surg`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March through Jan. 8"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
+    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March 2020 through Feb. 19, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -449,7 +587,7 @@ Adult_ICU_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facil
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Critical Care`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March through Jan. 8"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
+    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March 2020 through Feb. 19, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -469,7 +607,7 @@ Kid_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility %>%
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Med/Surg`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March through Jan. 8"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
+    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March 2020 through Feb. 19, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -489,7 +627,7 @@ Kid_ICU_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility 
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Critical Care`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March through Jan. 8"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
+    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March 2020 through Feb. 19, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")+
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
