@@ -1043,6 +1043,50 @@ Adding that again:
 incomplete_files <- rbind(incomplete_files,fortysixth_wave_of_files)
 ```
 
+Sept 27 update: 
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 9.18.21-9.24.21/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fortyseventh_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fortyseventh_wave_of_files)
+```
+
+Oct 4 update: 
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 9.25.2021-10.1.2021/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fortyeighth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fortyeighth_wave_of_files)
+```
+
 
 
 
@@ -1054,13 +1098,25 @@ Getting rid of obvious outliers
 
 #incomplete_files <- incomplete_files %>% 
   #filter(`Critical Care`!=990 & `Critical Care`!=900 &
-           #`Critical Care`!=712 &
+          #`Critical Care`!=712 &
            #`Critical Care`!=313 &
            #`Critical Care`!=231 &
            #`Critical Care`!=215 &
            #`Critical Care`!=198 )
   
 ```
+
+
+another bizarre occurence: Before Aug 25, 2021 West Chester hospital has one name. Then the suffix changes. So fixing that. 
+
+```{r}
+#"West Chester" %in%  incomplete_files$Facility
+#"West Chester Hospital (T3)"  
+#"West Chester Hospital (T3-P)" 
+```
+
+
+
 
 
 
@@ -1255,7 +1311,7 @@ Adult_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facility 
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Med/Surg`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March 2020 through Sept. 17, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March 2020 through Oct. 1 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
   ggsave(paste0(Yo.Hospital,".jpeg"), plot = last_plot(), device="jpeg")
 }
 
@@ -1264,6 +1320,8 @@ Adult_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facility 
 
 purrr::map(Adult_hospitals, Adult_Capacity)
 ```
+
+
 ICU beds for adults:
 ```{r}
 setwd("~/Code/Covid_Capacity/Adult_ICU")
@@ -1271,7 +1329,7 @@ Adult_ICU_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facil
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Critical Care`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March 2020 through Sept. 17, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March 2020 through Oct. 1 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -1291,7 +1349,7 @@ Kid_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility %>%
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Med/Surg`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March 2020 through Sept. 17, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March 2020 through Oct. 1 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -1311,7 +1369,7 @@ Kid_ICU_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility 
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Critical Care`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March 2020 through Sept. 17, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March 2020 through Oct. 1 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -1418,11 +1476,6 @@ data <- distinct(data) #Gets rid of duplicates
 ```
 
 
-Exporting data to look at in Tableau: 
-
-```{r}
-rio::export(data, "Hospital capacity and PPE data as of 11-20-2020.csv")
-```
 
 Looking at HHS data: 
 
@@ -1475,6 +1528,101 @@ datatable(full_ICU)
 
 ```
 
+
+Number of reports in last week: 
+```{r}
+last_week <- data %>%  filter(!is.na(`Med/Surg`)) %>% filter(Date>today()-9) #We get data three days behind
+```
+
+Number of reports the week before
+
+```{r}
+week_before <- data %>%  filter(!is.na(`Med/Surg`)) %>% filter(Date>today()-17 & Date<today()-9)
+```
+
+
+How often ICU was full
+
+```{r}
+goose_eggs_adult <- last_week %>% filter(`Critical Care`=="0") %>% 
+  filter(Facility!="Nationwide Children's Hospital (T1-B-P)" &
+         Facility!="Dayton Children's (T1-P)" &
+         Facility!="Children's Hospital - Liberty Campus"&
+         Facility!="Akron Children's Hospital (T2-B-P)"&
+         Facility!="University Hospitals Rainbow Babies and Children's Hospital (T1-P)"&
+         Facility!="Akron Children's Hospital - Mahoning Valley (P)" &
+         Facility!="ProMedica Toledo-Toledo Children's Hospitals (T1-P)"&
+         Facility!="Cincinnati Children's Hospital Medical Center (T1-P)"&
+           FileName=="ODH Adult Hospital Bed_Availability"|FileName=="ODH Adult Hospital Bed Availability")
+  
+goose_eggs_week_before <- week_before %>% filter(`Critical Care`=="0") %>% 
+  filter(Facility!="Nationwide Children's Hospital (T1-B-P)" &
+         Facility!="Dayton Children's (T1-P)" &
+         Facility!="Children's Hospital - Liberty Campus"&
+         Facility!="Akron Children's Hospital (T2-B-P)"&
+         Facility!="University Hospitals Rainbow Babies and Children's Hospital (T1-P)"&
+         Facility!="Akron Children's Hospital - Mahoning Valley (P)" &
+         Facility!="ProMedica Toledo-Toledo Children's Hospitals (T1-P)"&
+         Facility!="Cincinnati Children's Hospital Medical Center (T1-P)"&
+           FileName=="ODH Adult Hospital Bed_Availability"|FileName=="ODH Adult Hospital Bed Availability")
+```
+
+
+Beds per day 
+
+
+```{r}
+data <- data %>% 
+  mutate(data_type = case_when( 
+    FileName == "Central Region Hospital Resources" ~ 0                     
+, FileName ==  "Hospital- Adult Bed Availability" ~ 1                     
+,FileName == "Hospital- Pediatric Bed Availability"   ~  2              
+,FileName == "Northeast Central Region Hospital Resources"    ~    0    
+,FileName == "Northeast Region Hospital Resources"~     0               
+,FileName == "Northwest Region Hospital Resources"   ~  0               
+,FileName == "Southeast & Southeast Central Region Hospital Resources"~0
+,FileName == "Southwest Region Hospital Resources"  ~  0                
+,FileName == "West Central Region Hospital Resources" ~  0              
+,FileName == "Central Region Hospital_Resources" ~  0                   
+,FileName == "Northeast Central Region Hospital_Resources"  ~  0       
+,FileName == "Northeast Region Hospital_Resources "    ~   0            
+,FileName == "Northwest Region Hospital_Resources"~  0                  
+,FileName == "ODH Adult Hospital Bed Availability" ~  1                 
+,FileName == "ODH Peds Hospital Bed Availability" ~   2                 
+,FileName == "Southeast.Southeast Central Region Hospital_Resources" ~ 0
+,FileName == "Southwest Region Hospital_Resources"  ~ 0                 
+,FileName == "West Central Region Hospital_Resources"~  0               
+,FileName == "Northeast Region Hospital_Resources" ~   0                
+,FileName == "Southeast Region Hospital_Resources" ~   0                
+,FileName == "Southwest Region Hospital_Resources " ~    0              
+,FileName == "ODH Adult Hospital Bed_Availability"   ~  1               
+,FileName == "ODH Pediatric Hospital Bed_Availability" ~ 2               
+,FileName == "ODH Peds Hospital Bed_Availability" ~  2                  
+,FileName == "West Central Hospital_Resources" ~  0                     
+,FileName == "ODH Adult Hospital Bed_Availability 4.3-4.9" ~ 1          
+,FileName == "ODH Peds Hospital Bed_Availability 4.3-4.9" ~  2          
+,FileName == "ODH Adults Hospital Bed_Availability" ~  1                
+,FileName == "Southeast Region Hospital Resources"  ~ 0                 
+,FileName == "Northeast Region Hospital Resources "~0 ))
+
+
+#Equipment=0, Adult=1, Kid=2
+```
+
+
+Exporting data to look at in Tableau: 
+
+```{r}
+rio::export(data, "Hospital capacity and PPE data as of 11-20-2020.csv")
+```
+
+
+
+If you want to check:
+```{r}
+adults <-  data %>% filter(data_type==1 | data_type ==2) %>% filter(date(Date)==today()-4) %>% group_by(Facility) %>%  summarize(beds=mean(`Med/Surg`, na.rm=TRUE))
+kids <-  data %>% filter(data_type ==2) %>% filter(date(Date)==(today()-3)) %>% group_by(Facility) %>%  summarize(beds=mean(`Med/Surg`, na.rm=TRUE))
+```
 
 
 
