@@ -1089,6 +1089,29 @@ incomplete_files <- rbind(incomplete_files,fortyeighth_wave_of_files)
 
 
 
+Oct 11 update: 
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 10.2.2021-10.8.2021/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fortyninth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fortyninth_wave_of_files)
+```
+
+
 
 Getting rid of obvious outliers
 
@@ -1311,7 +1334,7 @@ Adult_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facility 
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Med/Surg`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March 2020 through Oct. 1 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March 2020 through Oct. 8, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
   ggsave(paste0(Yo.Hospital,".jpeg"), plot = last_plot(), device="jpeg")
 }
 
@@ -1329,7 +1352,7 @@ Adult_ICU_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facil
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Critical Care`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March 2020 through Oct. 1 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March 2020 through Oct. 8, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -1349,7 +1372,7 @@ Kid_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility %>%
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Med/Surg`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March 2020 through Oct. 1 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March 2020 through Oct. 8, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
@@ -1369,7 +1392,7 @@ Kid_ICU_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility 
     filter(Facility==Yo.Hospital) %>%
     ggplot(aes(x=Date, y=`Critical Care`))+
     geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March 2020 through Oct. 1 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March 2020 through Oct. 8, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
   ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
 }
 
