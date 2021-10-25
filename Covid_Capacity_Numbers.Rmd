@@ -13,6 +13,7 @@ library(readxl)
 library(DT)
 #library(ggmap)
 library(stringr)
+library(ggrepel)
 
 
 ```
@@ -1111,6 +1112,56 @@ Adding that again:
 incomplete_files <- rbind(incomplete_files,fortyninth_wave_of_files)
 ```
 
+Oct 18 update: 
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 10.9.21-10.15.21/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftieth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftieth_wave_of_files)
+```
+
+
+Oct 25 update: 
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 10.16.21-10.22.21/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftyfirst_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftyfirst_wave_of_files)
+```
+
+
+
+
+
+
 
 
 Getting rid of obvious outliers
@@ -1327,82 +1378,6 @@ This is all over Ohio, which was released a while ago, so it's not that exciting
 But a hospital bed in a big city doesn't really help you if you don't live near that city. Let's get to the local data. 
 
 
-Adult med/surg beds:
-```{r}
-setwd("~/Code/Covid_Capacity/Adult_Med_Surg")
-Adult_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facility %>% 
-    filter(Facility==Yo.Hospital) %>%
-    ggplot(aes(x=Date, y=`Med/Surg`))+
-    geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Med/Surg beds available"),subtitle=("Mid-March 2020 through Oct. 8, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
-  ggsave(paste0(Yo.Hospital,".jpeg"), plot = last_plot(), device="jpeg")
-}
-
-#Adult_Capacity("Cleveland Clinic Avon Hospital")
-
-
-purrr::map(Adult_hospitals, Adult_Capacity)
-```
-
-
-ICU beds for adults:
-```{r}
-setwd("~/Code/Covid_Capacity/Adult_ICU")
-Adult_ICU_Capacity <- function(Yo.Hospital){Adult_Hospital_Beds_By_Day_and_Facility %>% 
-    filter(Facility==Yo.Hospital) %>%
-    ggplot(aes(x=Date, y=`Critical Care`))+
-    geom_line()+
-    labs(title=paste(Yo.Hospital,"-Adult Critical Care beds available"),subtitle=("Mid-March 2020 through Oct. 8, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
-  ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
-}
-
-#Adult_ICU_Capacity("Cleveland Clinic Avon Hospital")
-
-
-purrr::map(Adult_hospitals, Adult_ICU_Capacity)
-
-
-```
-
-Pediatric Med/Surge Beds: 
-
-```{r}
-setwd("~/Code/Covid_Capacity/Kid_Med_Surg")
-Kid_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility %>% 
-    filter(Facility==Yo.Hospital) %>%
-    ggplot(aes(x=Date, y=`Med/Surg`))+
-    geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Med/Surg beds available"),subtitle=("Mid-March 2020 through Oct. 8, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
-  ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
-}
-
-#Kid_Capacity("Cleveland Clinic Avon Hospital")
-
-
-purrr::map(Kid_hospitals, Kid_Capacity)
-
-
-```
-
-Pediatric ICUs:
-
-```{r}
-setwd("~/Code/Covid_Capacity/Kid_ICU")
-Kid_ICU_Capacity <- function(Yo.Hospital){Kid_Hospital_Beds_By_Day_and_Facility %>% 
-    filter(Facility==Yo.Hospital) %>%
-    ggplot(aes(x=Date, y=`Critical Care`))+
-    geom_line()+
-    labs(title=paste(Yo.Hospital,"-Pediatric Critical Care beds available"),subtitle=("Mid-March 2020 through Oct. 8, 2021"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
-  ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
-}
-
-#Kid_Capacity("Cleveland Clinic Avon Hospital")
-
-
-purrr::map(Kid_hospitals, Kid_ICU_Capacity)
-
-
-```
 
 ##Location
 
@@ -1500,6 +1475,7 @@ data <- distinct(data) #Gets rid of duplicates
 
 
 
+
 Looking at HHS data: 
 
 ```{r}
@@ -1593,7 +1569,7 @@ goose_eggs_week_before <- week_before %>% filter(`Critical Care`=="0") %>%
 
 Beds per day 
 
-
+So the file names often change, which is fun.
 ```{r}
 data <- data %>% 
   mutate(data_type = case_when( 
@@ -1631,6 +1607,109 @@ data <- data %>%
 
 #Equipment=0, Adult=1, Kid=2
 ```
+
+getting the data in numeric format
+```{r}
+data$`Med/Surg` <- as.double(data$`Med/Surg`)
+data$`Critical Care` <- as.double(data$`Critical Care`)
+data$`Airborne Inf Isolation` <-  as.double(data$`Airborne Inf Isolation`)
+data$`Pediatric Airborne Infection Isolation`  <-  as.double(data$`Pediatric Airborne Infection Isolation`)
+```
+
+
+
+
+Adult med/surg beds:
+```{r}
+setwd("~/Code/Covid_Capacity/Adult_Med_Surg")
+Adult_Capacity <- function(Yo.Hospital){data %>% 
+    filter(Facility==Yo.Hospital) %>%
+    filter(data_type==1) %>% 
+    filter(lubridate::date(Date)>(today()-17)) %>% 
+    filter(!is.na(`Med/Surg`)) %>% 
+    ggplot(aes(x=Date, y=`Med/Surg`))+
+    geom_line()+
+    geom_label_repel(aes(label=`Med/Surg`), nudge_x=0.35, size = 8)+
+    labs(title=paste(Yo.Hospital,"-Staffed Adult Med/Surg beds available"),subtitle=("In the past two weeks"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+  ggsave(paste0(Yo.Hospital,".jpeg"), plot = last_plot(), device="jpeg")
+}
+
+#Adult_Capacity("Cleveland Clinic Avon Hospital")
+
+
+purrr::map(Adult_hospitals, Adult_Capacity)
+```
+
+
+ICU beds for adults:
+```{r}
+setwd("~/Code/Covid_Capacity/Adult_ICU")
+Adult_ICU_Capacity <- function(Yo.Hospital){data %>% 
+    filter(Facility==Yo.Hospital) %>%
+    filter(data_type==1) %>% 
+    filter(lubridate::date(Date)>(today()-17)) %>% 
+    filter(!is.na(`Critical Care`)) %>% 
+    ggplot(aes(x=Date, y=`Critical Care`))+
+    geom_line()+
+    geom_label_repel(aes(label=`Critical Care`), nudge_x=0.35, size = 8)+
+    labs(title=paste(Yo.Hospital,"-Staffed Adult ICU beds available"),subtitle=("In the past two weeks"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+  ggsave(paste0(Yo.Hospital,".jpeg"), plot = last_plot(), device="jpeg")
+}
+
+#Adult_ICU_Capacity("Cleveland Clinic Avon Hospital")
+
+
+purrr::map(Adult_hospitals, Adult_ICU_Capacity)
+
+
+```
+
+Pediatric Med/Surge Beds: 
+
+```{r}
+setwd("~/Code/Covid_Capacity/Kid_Med_Surg")
+Kid_Capacity <- function(Yo.Hospital){data %>% 
+    filter(Facility==Yo.Hospital) %>%
+    filter(data_type==2) %>% 
+    filter(lubridate::date(Date)>(today()-17)) %>% 
+    filter(!is.na(`Med/Surg`)) %>%
+    ggplot(aes(x=Date, y=`Med/Surg`))+
+    geom_line()+
+    labs(title=paste(Yo.Hospital,"-Staffed Pediatric Med/Surg beds available"),subtitle=("In the past week"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+  ggsave(Yo.Hospital, plot = last_plot(), device="jpeg")
+}
+
+#Kid_Capacity("Cleveland Clinic Avon Hospital")
+
+
+purrr::map(Kid_hospitals, Kid_Capacity)
+
+
+```
+
+Pediatric ICUs:
+
+```{r}
+setwd("~/Code/Covid_Capacity/Kid_ICU")
+Kid_ICU_Capacity <- function(Yo.Hospital){data %>% 
+    filter(Facility==Yo.Hospital) %>%
+    filter(data_type==2) %>% 
+    filter(lubridate::date(Date)>(today()-17)) %>% 
+    filter(!is.na(`Critical Care`)) %>% 
+    ggplot(aes(x=Date, y=`Critical Care`))+
+    geom_line()+
+    geom_label_repel(aes(label=`Critical Care`), nudge_x=0.35, size = 8)+
+    labs(title=paste(Yo.Hospital,"-Staffed Adult ICU beds available"),subtitle=("In the past two weeks"),caption = "Source: Ohio Department of Health; Graph credit: Eye on Ohio, the Ohio Center for Journalism")
+  ggsave(paste0(Yo.Hospital,".jpeg"), plot = last_plot(), device="jpeg")
+}
+
+
+
+purrr::map(Kid_hospitals, Kid_ICU_Capacity)
+
+
+```
+
 
 
 Exporting data to look at in Tableau: 
