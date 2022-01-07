@@ -1157,6 +1157,262 @@ Adding that again:
 incomplete_files <- rbind(incomplete_files,fiftyfirst_wave_of_files)
 ```
 
+Nov 1 Update:
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 10.23.21-10.29.21/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftysecond_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftysecond_wave_of_files)
+```
+
+
+
+Nov 8 Update:
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 10-30-2021-11-5-2021/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftythird_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftythird_wave_of_files)
+```
+
+Nov 15 Update:
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 11-6-2021-11-12-2021/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftyfourth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftyfourth_wave_of_files)
+```
+
+Nov. 22 update:
+
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 11-13-2021 to 11-19-2021 /")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftyfifth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftyfifth_wave_of_files)
+```
+
+Nov. 29 update
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 11.20.21-11.26.21/")
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftysixth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftysixth_wave_of_files)
+```
+
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 11.27.21-12.3.21/")
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftyseventh_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftyseventh_wave_of_files)
+```
+
+
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 12.4.21- 12.10.21/")
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftyeighth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftyeighth_wave_of_files)
+```
+
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 12.13.2021-12.19.2021/")
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+fiftyninth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,fiftyninth_wave_of_files)
+```
+
+12/29 update:
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 12.18.21-12.23.21/")
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+sixtieth_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,sixtieth_wave_of_files)
+```
+
+12/30 update:
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 12.23.21-12.30.21/")
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+sixtyfirst_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+#Putting the date into Eastern Time
+sixtyfirst_wave_of_files$Date <- force_tz(sixtyfirst_wave_of_files$Date, tzone = "America/New_York", roll = FALSE)
+
+#since we got Dec 23 twice 
+#This works
+
+sixtyfirst_wave_of_files <- filter(sixtyfirst_wave_of_files, Date>"2021-12-23 23:59:59")
+#Since we only have until 9:45AM on Dec 30
+
+#Neither of these do. Why?!
+sixtyfirst_wave_of_files <- filter(sixtyfirst_wave_of_files, Date<"2021-12-30 00:00:00")
+
+
+incomplete_files <- rbind(incomplete_files,sixtyfirst_wave_of_files)
+```
+
+
+
+```{r}
+setwd("~/Code/Covid_Capacity/ODH SurgeNet 12.30.21 - 1.7.22/")
+
+
+list_of_files_xlsx <- list.files(path = ".", recursive = TRUE,
+                            pattern = "\\.xlsx$", 
+                            full.names = TRUE)
+
+
+sixtysecond_wave_of_files <- list_of_files_xlsx %>%
+  purrr::set_names(nm = (basename(.) %>% tools::file_path_sans_ext())) %>%
+  purrr::map_df(read_excel, 
+                .id = "FileName")
+
+```
+
+Adding that again: 
+
+```{r}
+incomplete_files <- rbind(incomplete_files,sixtysecond_wave_of_files)
+```
+
+
+
+
 
 
 
@@ -1602,7 +1858,22 @@ data <- data %>%
 ,FileName == "ODH Peds Hospital Bed_Availability 4.3-4.9" ~  2          
 ,FileName == "ODH Adults Hospital Bed_Availability" ~  1                
 ,FileName == "Southeast Region Hospital Resources"  ~ 0                 
-,FileName == "Northeast Region Hospital Resources "~0 ))
+,FileName == "Northeast Region Hospital Resources "~0,
+FileName == "Adult Hospital Bed_Availability" ~1,
+FileName =="Pediatric Hospital Bed_Availability" ~2,
+FileName =="ODH Peds Hospital Bed_Availability on the 24th" ~ 2,
+FileName =="ODH Peds Hosptial Bed_Availability" ~ 2,
+FileName =="Adult Hospital Bed_Availability"~1,
+FileName =="Pediatric Hospital Bed_Availability"~2,
+FileName =="ODH Adult Bed Availability"~1,
+FileName =="ODH Peds Bed Availability"~2,
+FileName =="Adult Hospital Bed_Availability" ~ 1,
+FileName =="Pediatric Hospital Bed_Availability"  ~ 2,
+FileName =="ODH Adult Bed Availability" ~1,
+FileName =="ODH Peds Bed Availability"~2,
+FileName =="ODH Adult Bed Availability " ~ 1,
+FileName =="ODH Pediatric Bed Availability" ~2
+))
 
 
 #Equipment=0, Adult=1, Kid=2
